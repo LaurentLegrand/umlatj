@@ -1,0 +1,37 @@
+= Overview =
+
+An Association is a link between two [Classifier]s.
+
+= Usage =
+
+The annotation @org.umlatj.Association must be placed on a Java field of a class annotated
+by @org.umlatj.Package.
+The field must be of type org.umlatj.kernel.Association.Binary
+
+
+= Sample =
+
+== Design ==
+
+http://umlatj.googlecode.com/svn/wiki/Association.content/FolderContainsDocuments.png
+
+== Implementation ==
+{{{
+package wiki;
+
+import org.umlatj.kernel.Association;
+import org.umlatj.kernel.Package;
+import org.umlatj.kernel.Association.Binary;
+import org.umlatj.kernel.Association.End;
+
+@Package
+public class MyPackage {
+
+	@Association( { @End("folder"), @End("documents") })
+	private Binary<Folder, Document> folderContainsDocuments;
+
+	public Binary<Folder, Document> getFolderContainsDocuments() {
+		return folderContainsDocuments;
+	}
+}
+}}}
