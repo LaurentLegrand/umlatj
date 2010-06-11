@@ -13,9 +13,51 @@ The field must be of type org.umlatj.kernel.Association.Binary
 
 == Design ==
 
+Assuming the following one-to-many association between Folder and Document:
+
 http://umlatj.googlecode.com/svn/wiki/Association.content/FolderContainsDocuments.png
 
 == Implementation ==
+
+The corresponding implementation will be:
+
+=== Folder.java ===
+{{{
+package wiki;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.umlatj.kernel.Classifier;
+import org.umlatj.kernel.Property;
+
+@Classifier
+public class Folder {
+
+	@Property
+	Collection<Document> documents = new ArrayList<Document>();
+
+}
+}}}
+
+=== Document.java ===
+{{{
+package wiki;
+
+import org.umlatj.kernel.Classifier;
+import org.umlatj.kernel.Property;
+
+@Classifier
+public class Document {
+	
+	@Property
+	Folder folder;
+
+}
+}}}
+
+=== MyPackage.java === 
+
 {{{
 package wiki;
 
@@ -35,3 +77,14 @@ public class MyPackage {
 	}
 }
 }}}
+
+As usual, the association ends are represented by fields in classes Folder and Document.
+
+And The association is represented by the field called `folderContainsDocument`.
+
+Note that the order in the declaration of the @End and in the generics looks like what we
+have in the diagram: `Folder folder <--> documents Document`.  
+
+= Runtime expectations =
+
+
