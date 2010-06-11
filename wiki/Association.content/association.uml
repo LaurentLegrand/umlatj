@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA">
+  <packagedElement xmi:type="uml:Package" xmi:id="_w8IxIM37EdqwVrslYOdUDA" name="association">
+    <packagedElement xmi:type="uml:Class" xmi:id="__plQQHVTEd-mq5yQTSCcYw" name="Folder"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_AzWUuHVUEd-mq5yQTSCcYw" name="Document"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_DbuFKnVUEd-mq5yQTSCcYw" name="FolderContainsDocuments" memberEnd="_DbuFK3VUEd-mq5yQTSCcYw _DbuFLnVUEd-mq5yQTSCcYw">
+      <ownedEnd xmi:id="_DbuFK3VUEd-mq5yQTSCcYw" name="folder" type="__plQQHVTEd-mq5yQTSCcYw" association="_DbuFKnVUEd-mq5yQTSCcYw">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_DbuFLHVUEd-mq5yQTSCcYw" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DbuFLXVUEd-mq5yQTSCcYw"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_DbuFLnVUEd-mq5yQTSCcYw" name="documents" type="_AzWUuHVUEd-mq5yQTSCcYw" association="_DbuFKnVUEd-mq5yQTSCcYw">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_DbuFL3VUEd-mq5yQTSCcYw" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DbuFMHVUEd-mq5yQTSCcYw"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
