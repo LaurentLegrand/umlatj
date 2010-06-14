@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<additionalHeaders>
+    <template_style>
+        <firstLine>«REM»</firstLine>
+        <beforeEachLine>  </beforeEachLine>
+        <endLine>«ENDREM»</endLine>
+        <firstLineDetectionPattern>«REM».*$</firstLineDetectionPattern>
+        <lastLineDetectionPattern>«ENDREM»$</lastLineDetectionPattern>
+        <allowBlankLines>false</allowBlankLines>
+        <isMultiline>true</isMultiline>
+    </template_style>
+</additionalHeaders>
