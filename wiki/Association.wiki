@@ -4,8 +4,8 @@ An Association is a link between two [Classifier]s.
 
 = Usage =
 
-The annotation @org.umlatj.Association must be placed on a Java field of a class annotated
-by @org.umlatj.Package.
+The annotation `@org.umlatj.Association` must be placed on a Java field of a class annotated
+by `@org.umlatj.Package`.
 The field must be of type org.umlatj.kernel.Association.Binary
 
 
@@ -87,4 +87,29 @@ have in the diagram: `Folder folder <--> documents Document`.
 
 = Runtime expectations =
 
+At runtime, the consistency of the association is guaranteed when using the association instance (`Binary`).
+
+For instance, the following unit test the reference to folder and the collection of documents are consistent:
+
+ {{{
+ package wiki;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AssociationTest {
+
+	@Test
+	public void test() {
+		Folder folder = new Folder();
+		
+		Document document = new Document();
+		new MyPackage().getFolderContainsDocuments().add(folder, document);
+		
+		Assert.assertEquals(document.folder, folder);
+		Assert.assertTrue(folder.documents.contains(document));
+		
+	}
+}
+ }}}
 
