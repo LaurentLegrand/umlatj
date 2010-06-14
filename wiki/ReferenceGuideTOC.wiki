@@ -1,5 +1,6 @@
   * Kernel
     * [Association]
     * [QualifiedAssociation]
+    * [Hierarchy]
    
    

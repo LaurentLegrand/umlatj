@@ -1,0 +1,113 @@
+#sidebar ReferenceGuideTOC
+
+= Overview =
+
+A Hierarchy is a special kind of [Association] of a class on itself.
+
+= Usage =
+
+The annotation `@org.umlatj.Association` must be placed on a Java field of a class annotated
+by `@org.umlatj.Package`.
+The field must be of type org.umlatj.kernel.Association.Hierarchy
+
+
+= Sample =
+
+== Design ==
+
+Assuming a one-to-many association between Task and itself,
+
+
+== Implementation ==
+
+The corresponding implementation will be:
+
+=== Task.java ===
+{{{
+package wiki;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.umlatj.kernel.Classifier;
+import org.umlatj.kernel.Property;
+
+@Classifier
+public class Task {
+	
+	@Property
+	Task parent;
+	
+	@Property
+	List<Task> subtasks = new ArrayList<Task>();
+
+}
+
+}}}
+
+=== MyHierarchy.java === 
+
+{{{
+package wiki;
+
+import org.umlatj.kernel.Association;
+import org.umlatj.kernel.Package;
+import org.umlatj.kernel.Association.End;
+import org.umlatj.kernel.Association.Hierarchy;
+
+@Package
+public class MyHierarchy {
+
+	@Association( { @End("parent"), @End("subtasks") })
+	private Hierarchy<Task> taskContainsSubtaks;
+
+	public Hierarchy<Task> getTaskContainsSubtaks() {
+		return taskContainsSubtaks;
+	}
+
+}
+}}}
+
+
+= Runtime expectations =
+
+At runtime, as for [Association binary association], the consistency of the hierarchy is guaranteed when using the association instance (`Hierarchy`).
+
+Additionally, the `Hierarchy` class has helper methods to navigate in the hierarchy. These methods are borrowed from the XML world
+and behave like the [http://en.wikipedia.org/wiki/XPath_1.0#Axis_specifiers XPath axes].
+
+
+ {{{
+package wiki;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class HierarchyTest {
+	
+	@Test
+	public void test() {
+		
+		Task task = new Task();
+		Task task_1 = new Task();
+		Task task_1_1 = new Task();
+		Task task_1_2 = new Task();
+		
+		MyHierarchy hierarchy = new MyHierarchy();
+		hierarchy.getTaskContainsSubtaks().add(task, task_1);
+		hierarchy.getTaskContainsSubtaks().add(task_1, task_1_1);
+		hierarchy.getTaskContainsSubtaks().add(task_1, task_1_2);
+
+		// check root
+		Assert.assertEquals(hierarchy.getTaskContainsSubtaks().getRoot(task_1_2), task);
+		
+		// get the ancestor axis
+		Assert.assertTrue(hierarchy.getTaskContainsSubtaks().getAncestors(task_1_2).contains(task_1));
+		
+		
+	}
+
+}
+
+ }}}
+
