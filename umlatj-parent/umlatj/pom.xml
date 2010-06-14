@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>umlatj-parent</artifactId>
+		<groupId>org.umlatj</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
   <groupId>org.umlatj</groupId>
   <artifactId>umlatj</artifactId>
+  <name>uml@J</name>
   <version>0.0.1-SNAPSHOT</version>
   <dependencies>
- 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -23,14 +24,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
 				<version>1.1</version>
@@ -43,46 +36,6 @@
 						<goals>
 							<goal>compile</goal>
 							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Checking license headers -->
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${basedir}/src/etc/header.txt</header>
-					<quiet>false</quiet>
-					<failIfMissing>false</failIfMissing>
-					<aggregate>false</aggregate>
-					<includes>
-						<include>**/src/**</include>
-					</includes>
-					<useDefaultExcludes>true</useDefaultExcludes>
-					<mapping>
-						<ext>JAVADOC_STYLE</ext>
-						<xpt>TEMPLATE_STYLE</xpt>
-						<ecmd>XML_STYLE</ecmd>
-						<mwe>XML_STYLE</mwe>
-						<java>JAVADOC_STYLE</java>
-						<aj>JAVADOC_STYLE</aj>
-						<properties>SCRIPT_STYLE</properties>
-					</mapping>
-					<useDefaultMapping>false</useDefaultMapping>
-					<properties>
-						<year>2010</year>
-					</properties>
-					<encoding>UTF-8</encoding>
-					<headerDefinitions>
-						<headerDefinition>${basedir}/src/etc/ext-style.xml</headerDefinition>
-					</headerDefinitions>
-	            </configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
