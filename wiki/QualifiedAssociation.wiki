@@ -8,15 +8,18 @@
 
 A QualifiedAssociation is declared the same way as a [Association binary association].
 
-The description of the qualifier (the attribute used to qualify the association) is done at the 
+But the description of the qualifier (the attribute used to qualify the association) is done at the 
 [Property] declaration level by using the `qualified` attribute of the `org.umlatj.Property` annotation.  
 
 = Sample =
 
-For instance, a association between a (db) Table and a Column qualified by the Column name will be 
-represented in Java by a `java.util.Map` in the Table class. 
+For instance, a association between a (db) Table and a Column qualified by the Column name :
 
-The value of the qualifier attribute must correspond to a property of the Column class.
+http://umlatj.googlecode.com/svn/wiki/QualifiedAssociation.content/TableContainsColumns.png
+
+will be represented in Java by a `java.util.Map` in the Table class. 
+
+The value of the qualifier attribute (`name`) must correspond to a property of the Column class.
 
 == Implementation ==
 
