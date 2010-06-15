@@ -8,7 +8,7 @@ An Association is a link between two [Classifier]s.
 
 The annotation `@org.umlatj.Association` must be placed on a Java field of a class annotated
 by `@org.umlatj.Package`.
-The field must be of type org.umlatj.kernel.Association.Binary
+The field must be of type `org.umlatj.kernel.Association.Binary`.
 
 
 = Sample =
@@ -114,4 +114,3 @@ public class AssociationTest {
 	}
 }
  }}}
-
