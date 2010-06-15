@@ -15,7 +15,9 @@ The field must be of type org.umlatj.kernel.Association.Hierarchy
 
 == Design ==
 
-Assuming a one-to-many association between Task and itself,
+Assuming a one-to-many association between Task and itself:
+
+http://umlatj.googlecode.com/svn/wiki/Hierarchy.content/TaskContainsSubtasks.png
 
 
 == Implementation ==
@@ -59,10 +61,10 @@ import org.umlatj.kernel.Association.Hierarchy;
 public class MyHierarchy {
 
 	@Association( { @End("parent"), @End("subtasks") })
-	private Hierarchy<Task> taskContainsSubtaks;
+	private Hierarchy<Task> taskContainsSubtasks;
 
-	public Hierarchy<Task> getTaskContainsSubtaks() {
-		return taskContainsSubtaks;
+	public Hierarchy<Task> getTaskContainsSubtasks() {
+		return taskContainsSubtasks;
 	}
 
 }
@@ -94,15 +96,15 @@ public class HierarchyTest {
 		Task task_1_2 = new Task();
 		
 		MyHierarchy hierarchy = new MyHierarchy();
-		hierarchy.getTaskContainsSubtaks().add(task, task_1);
-		hierarchy.getTaskContainsSubtaks().add(task_1, task_1_1);
-		hierarchy.getTaskContainsSubtaks().add(task_1, task_1_2);
+		hierarchy.getTaskContainsSubtasks().add(task, task_1);
+		hierarchy.getTaskContainsSubtasks().add(task_1, task_1_1);
+		hierarchy.getTaskContainsSubtasks().add(task_1, task_1_2);
 
 		// check root
-		Assert.assertEquals(hierarchy.getTaskContainsSubtaks().getRoot(task_1_2), task);
+		Assert.assertEquals(hierarchy.getTaskContainsSubtasks().getRoot(task_1_2), task);
 		
 		// get the ancestor axis
-		Assert.assertTrue(hierarchy.getTaskContainsSubtaks().getAncestors(task_1_2).contains(task_1));
+		Assert.assertTrue(hierarchy.getTaskContainsSubtasks().getAncestors(task_1_2).contains(task_1));
 		
 		
 	}
