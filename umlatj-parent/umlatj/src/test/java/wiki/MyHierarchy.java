@@ -9,10 +9,10 @@ import org.umlatj.kernel.Association.Hierarchy;
 public class MyHierarchy {
 
 	@Association( { @End("parent"), @End("subtasks") })
-	private Hierarchy<Task> taskContainsSubtaks;
+	private Hierarchy<Task> taskContainsSubtasks;
 
-	public Hierarchy<Task> getTaskContainsSubtaks() {
-		return taskContainsSubtaks;
+	public Hierarchy<Task> getTaskContainsSubtasks() {
+		return taskContainsSubtasks;
 	}
 
 }
