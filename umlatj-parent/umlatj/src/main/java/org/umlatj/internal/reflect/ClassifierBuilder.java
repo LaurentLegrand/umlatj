@@ -22,11 +22,17 @@
 
 package org.umlatj.internal.reflect;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.umlatj.internal.kernel.KClassifier;
@@ -38,15 +44,57 @@ import org.umlatj.internal.kernel.property.CollectionProperty;
 import org.umlatj.internal.kernel.property.MapProperty;
 import org.umlatj.internal.kernel.property.SingletonProperty;
 import org.umlatj.internal.util.Classes;
+import org.umlatj.internal.util.proxy.FieldProxy;
 import org.umlatj.internal.util.proxy.FieldProxyImpl;
 import org.umlatj.internal.util.proxy.MethodProxy;
 import org.umlatj.internal.util.proxy.MethodProxyImpl;
+import org.umlatj.internal.util.proxy.PropertyBasedImpl;
 import org.umlatj.internal.util.proxy.TypeProxyImpl;
 import org.umlatj.kernel.Classifier;
 import org.umlatj.kernel.Constraint;
 import org.umlatj.kernel.Property;
 
 public class ClassifierBuilder extends Builder<KClassifier> {
+
+	class Match {
+
+		/**
+		 * The field proxy
+		 */
+		FieldProxy<?> proxy;
+
+		/**
+		 * The property value
+		 */
+		Property property;
+
+		/**
+		 * The type of the property
+		 */
+		Class<?> type;
+
+		/**
+		 * The generic type
+		 */
+		Type genericType;
+
+		public FieldProxy<?> getProxy() {
+			return proxy;
+		}
+
+		public Property getProperty() {
+			return property;
+		}
+
+		public Class<?> getType() {
+			return type;
+		}
+
+		public Type getGenericType() {
+			return genericType;
+		}
+
+	}
 
 	@Override
 	public KClassifier newInstance(Class<?> type) {
@@ -57,16 +105,15 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 	@Override
 	public void build(Class<?> type, KClassifier instance) {
 
-		for (Field field : Classes.findFields(type, Property.class)) {
+		for (Match match : this.findMatches(type)) {
 			KProperty property = null;
-			if (Collection.class.isAssignableFrom(field.getType())) {
-				property = new CollectionProperty( new FieldProxyImpl(
-						field));
-			} else if (Map.class.isAssignableFrom(field.getType())) {
+			if (Collection.class.isAssignableFrom(match.type)) {
+				property = new CollectionProperty(match.proxy);
+			} else if (Map.class.isAssignableFrom(match.type)) {
 				// qualified
 				try {
 					// class used as value
-					Class<?> valueType = (Class<?>) ((ParameterizedType) field
+					Class<?> valueType = (Class<?>) ((ParameterizedType) match
 							.getGenericType()).getActualTypeArguments()[1];
 					valueType.getDeclaredFields();
 
@@ -74,18 +121,17 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 					 * the qualified value must correspond to a declared field
 					 * of the value type
 					 */
-					Field key = valueType.getDeclaredField(field.getAnnotation(
-							Property.class).qualifier());
-					property = new MapProperty(new FieldProxyImpl(
-							field), new FieldProxyImpl(key));
+					Field key = valueType.getDeclaredField(match.getProperty()
+							.qualifier());
+					property = new MapProperty(match.getProxy(),
+							new FieldProxyImpl(key));
 				} catch (NoSuchFieldException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
 			} else {
-				property = new SingletonProperty(new FieldProxyImpl(
-						field));
+				property = new SingletonProperty(match.getProxy());
 			}
 			if (property != null) {
 				instance.addAttribute(property);
@@ -100,6 +146,41 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 					: new ThisConstraint(proxy);
 			instance.addConstraint(constraint);
 		}
+	}
+
+	List<Match> findMatches(Class<?> type) {
+		List<Match> list = new ArrayList<Match>();
+		for (Field field : Classes.findFields(type, Property.class)) {
+			Match match = new Match();
+			match.proxy = new FieldProxyImpl(field);
+			match.property = field.getAnnotation(Property.class);
+			match.type = field.getType();
+			match.genericType = field.getGenericType();
+			list.add(match);
+		}
+
+		try {
+			for (PropertyDescriptor descriptor : Introspector.getBeanInfo(type,
+					type.getSuperclass()).getPropertyDescriptors()) {
+				Property property = descriptor.getReadMethod().getAnnotation(
+						Property.class);
+				if (property == null) {
+					continue;
+				}
+
+				Match match = new Match();
+				match.proxy = new PropertyBasedImpl(descriptor);
+				match.property = property;
+				match.type = descriptor.getReadMethod().getReturnType();
+				match.genericType = descriptor.getReadMethod()
+						.getGenericReturnType();
+				list.add(match);
+			}
+		} catch (IntrospectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@Override
