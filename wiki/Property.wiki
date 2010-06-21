@@ -1,0 +1,104 @@
+#sidebar ReferenceGuideTOC
+
+= Overview =
+
+A Property is a feature owned by a [Classifier].
+
+= Usage =
+
+The annotation `@org.umlatj.kernel.Property` is used to define a property.
+`@org.umlatj.kernel.Property` can be placed on a Java field or on a getter method.
+
+= Use Cases =
+
+== Association ==
+
+TODO
+
+== Subsets and Derived Unions ==
+
+A good description of Derived Union is described here: http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Customizing_UML2_Which_Technique_is_Right_For_You/article.html
+
+
+With uml@J, to declare a derived union, 
+* the `@org.umlatj.kernel.Property` annotation must be placed on a getter method.
+* the property `isDerivedUnion` must be set to `true`.
+
+Note. the getter method body may contain any statements; they will be by-passed by some aspects.  
+
+In order to declare a subset,
+* the `subset` property of `@org.umlatj.kernel.Property` must de defined and its value must reference a property which is declared as a 
+ derived union. 
+
+The example below shows the declaration of a derived union and of a subset. 
+The JUnit test case shows the runtime effect of derived union / subset mechanism.  
+
+{{{
+
+package wiki;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.umlatj.kernel.Classifier;
+import org.umlatj.kernel.Property;
+
+@Classifier
+public class Element {
+	
+	/**
+	 * Declare the property ownedElement as a derived union.
+	 * 
+	 * @return
+	 */
+	@Property(isDerivedUnion = true)
+	public Collection<Element> getOwnedElement() {
+		return null;
+	}
+	
+	/**
+	 * Declare the property ownedComment as a subset of ownedElement
+	 */
+	@Property(subset="ownedElement")
+	Collection<Comment> ownedComment = new ArrayList<Comment>();
+	
+}
+
+}}}
+
+{{{
+package wiki;
+
+import org.umlatj.kernel.Classifier;
+
+@Classifier
+public class Comment extends Element {
+
+}
+}}}
+
+{{{
+package wiki;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class DerivedUnionTest {
+	
+	@Test
+	public void test() {
+		Element element = new Element();
+		Comment comment = new Comment();
+		
+		// add the comment 
+		element.ownedComment.add(comment);
+		
+		// verify that the comment is contained in the ownedElement property
+		Assert.assertTrue(element.getOwnedElement().contains(comment));
+	}
+
+}
+}}}
+
+
+
