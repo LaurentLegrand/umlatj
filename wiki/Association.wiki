@@ -6,7 +6,7 @@ An Association is a link between two [Classifier]s.
 
 = Usage =
 
-The annotation `@org.umlatj.Association` must be placed on a Java field of a class annotated
+The annotation `@org.umlatj.kernel.Association` must be placed on a Java field of a class annotated
 by `@org.umlatj.Package`.
 The field must be of type `org.umlatj.kernel.Association.Binary`.
 
