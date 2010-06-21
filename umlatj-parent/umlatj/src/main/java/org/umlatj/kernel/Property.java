@@ -58,4 +58,16 @@ public @interface Property {
 	 */
 	String qualifier() default "";
 
+	/**
+	 * 
+	 * 
+	 */
+	boolean isDerivedUnion() default false;
+
+	/**
+	 * 
+	 * @return
+	 */
+	String subset() default "";
+
 }

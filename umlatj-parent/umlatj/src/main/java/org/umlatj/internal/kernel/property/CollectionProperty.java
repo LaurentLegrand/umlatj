@@ -156,8 +156,14 @@ public class CollectionProperty<E> extends KProperty<E> {
 		return new ArrayList<E>(this.get(self));
 	}
 
-	public Collection<E> newCollectionProxy(Object self, Collection<E> collection) {
+	public Collection<E> newCollectionProxy(Object self,
+			Collection<E> collection) {
 		return new CollectionProxy(self, collection);
+	}
+
+	@Override
+	protected Object convert(List<E> list) {
+		return list;
 	}
 
 }

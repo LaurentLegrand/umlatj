@@ -31,12 +31,19 @@ public class ClassifierTest {
 	 */
 	@Test
 	public void findProperties() {
-		new MyClassifier();
 		KClassifier classifier = Types.asClassifier(MyClassifier.class);
 		Assert.assertNotNull(classifier);
 
 		Assert.assertNotNull(classifier.getAttribute("name"));
 		Assert.assertNotNull(classifier.getAttribute("test"));
+	}
+
+	@Test
+	public void verifyAspect() {
+		MyClassifier classifier = new MyClassifier();
+		classifier.test = "test";
+		Assert.assertEquals("test", classifier.getTest());
+
 	}
 
 }

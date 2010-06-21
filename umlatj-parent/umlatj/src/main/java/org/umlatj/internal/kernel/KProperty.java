@@ -22,7 +22,10 @@
 
 package org.umlatj.internal.kernel;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Runtime part of a property.
@@ -59,10 +62,22 @@ public abstract class KProperty<E> extends KNamedElement {
 	 */
 	final int upper;
 
+	/**
+	 * 
+	 */
+	boolean derivedUnion;
+
+	Set<KProperty<? extends E>> subsets = new HashSet<KProperty<? extends E>>();
+
 	public KProperty(String name, int lower, int upper) {
 		super(name);
 		this.lower = lower;
 		this.upper = upper;
+	}
+	
+	public void addSubset(KProperty<? extends E> subset) {
+		this.derivedUnion = true;
+		this.subsets.add(subset);
 	}
 
 	/**
@@ -141,8 +156,28 @@ public abstract class KProperty<E> extends KNamedElement {
 	 * that will be removed before an add will be performed.
 	 */
 	public abstract E evict(Object self);
-	
+
 	public abstract List<E> toList(Object self);
+	
+	public Object union(Object self) {
+		List<E> elements = new ArrayList<E>();
+		if (this.derivedUnion) {
+			for (KProperty<? extends E> subset: this.subsets) {
+				elements.addAll(subset.toList(self));
+			}
+		} else {
+			elements.addAll(this.toList(self));
+		}
+		return this.convert(elements);
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param list
+	 * @return
+	 */
+	protected abstract Object convert(List<E> list); 
 
 	@SuppressWarnings("unchecked")
 	public void setAssociationAsOwner(KAssociation<?, E> associationAsOwner) {

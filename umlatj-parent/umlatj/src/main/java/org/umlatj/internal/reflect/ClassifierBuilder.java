@@ -105,6 +105,11 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 	@Override
 	public void build(Class<?> type, KClassifier instance) {
 
+		// add super class if any
+		if (type.getSuperclass().getAnnotation(Classifier.class) != null) {
+			instance.addGeneral(Types.asClassifier(type.getSuperclass()));
+		}
+
 		for (Match match : this.findMatches(type)) {
 			KProperty property = null;
 			if (Collection.class.isAssignableFrom(match.type)) {
@@ -134,7 +139,17 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 				property = new SingletonProperty(match.getProxy());
 			}
 			if (property != null) {
-				instance.addAttribute(property);
+				instance.addOwnedAttribute(property);
+				// manage derived union
+				if (!"".equals(match.property.subset())) {
+					KProperty union = instance.getAttribute(match.property
+							.subset());
+					if (union != null) {
+						union.addSubset(property);
+					} else {
+						// TODO raise warning!
+					}
+				}
 			}
 		}
 

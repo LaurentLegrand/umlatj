@@ -22,7 +22,9 @@
 
 package org.umlatj.internal.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.umlatj.internal.kernel.contraint.ConstraintBuilder;
@@ -30,25 +32,30 @@ import org.umlatj.internal.util.proxy.TypeProxy;
 
 public class KClassifier extends KType {
 
-	Map<String, KProperty<?>> attributes = new HashMap<String, KProperty<?>>();
+	Map<String, KProperty<?>> ownedAttribute = new HashMap<String, KProperty<?>>();
 
 	Map<String, KConstraint> constraints = new HashMap<String, KConstraint>();
 
 	ConstraintBuilder constraintBuilder = null;
-	
-//	new ConstraintBuilder() {
-//
-//		@Override
-//		protected KConstraint fromLiteral(Literal literal) {
-//			/*
-//			 * String value = literal.getValue(); value = "is" +
-//			 * Character.toUpperCase(value.charAt(0)) + value.substring(1);
-//			 * return KClassifier.this.getConstraint(value);
-//			 */
-//			return new TrueConstraint();
-//		}
-//
-//	};
+
+	/**
+	 * The super classes.
+	 */
+	List<KClassifier> general = new ArrayList<KClassifier>();
+
+	// new ConstraintBuilder() {
+	//
+	// @Override
+	// protected KConstraint fromLiteral(Literal literal) {
+	// /*
+	// * String value = literal.getValue(); value = "is" +
+	// * Character.toUpperCase(value.charAt(0)) + value.substring(1);
+	// * return KClassifier.this.getConstraint(value);
+	// */
+	// return new TrueConstraint();
+	// }
+	//
+	// };
 
 	public KClassifier(TypeProxy type) {
 		super(type);
@@ -62,16 +69,37 @@ public class KClassifier extends KType {
 		return this.constraints.get(name);
 	}
 
-	public void addAttribute(KProperty<?> property) {
-		this.attributes.put(property.getName(), property);
+	public void addOwnedAttribute(KProperty<?> property) {
+		this.ownedAttribute.put(property.getName(), property);
 	}
 
+	/**
+	 * Return the attribute with a given name. Find it locally first and in
+	 * parent last.
+	 * 
+	 * @return <code>null</code> if attribute not found
+	 */
 	public KProperty<?> getAttribute(String name) {
-		return this.attributes.get(name);
+		KProperty<?> attribute = this.ownedAttribute.get(name);
+		if (attribute != null) {
+			return attribute;
+		}
+		for (KClassifier classifier : this.general) {
+			attribute = classifier.getAttribute(name);
+			if (attribute != null) {
+				return attribute;
+			}
+		}
+		// not found
+		return null;
 	}
 
 	public ConstraintBuilder getConstraintBuilder() {
 		return constraintBuilder;
+	}
+
+	public void addGeneral(KClassifier classifier) {
+		this.general.add(classifier);
 	}
 
 }
