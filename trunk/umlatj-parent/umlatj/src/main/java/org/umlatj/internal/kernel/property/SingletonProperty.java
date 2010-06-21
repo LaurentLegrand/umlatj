@@ -97,10 +97,16 @@ public class SingletonProperty<E> extends KProperty<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-    @Override
+	@Override
 	public List<E> toList(Object self) {
 		E e = this.get(self);
-		return (List<E>) ((e == null) ? Collections.emptyList() : Collections.singletonList(e));
+		return (List<E>) ((e == null) ? Collections.emptyList() : Collections
+				.singletonList(e));
+	}
+
+	@Override
+	protected Object convert(List<E> list) {
+		return (list.isEmpty()) ? null : list.get(0);
 	}
 
 }

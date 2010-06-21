@@ -22,10 +22,30 @@
 
 package org.umlatj.internal.reflect;
 
+import org.umlatj.internal.kernel.KClassifier;
+import org.umlatj.internal.kernel.KProperty;
+import org.umlatj.internal.util.Beans;
+import org.umlatj.kernel.Classifier;
+import org.umlatj.kernel.Property;
 
 public privileged aspect Classifiers {
 
-	after() : staticinitialization(@org.umlatj.kernel.Classifier *) {
-		Types.asClassifier(thisJoinPoint.getSignature().getDeclaringType());
+	public static aspect PerPackage pertypewithin(@Classifier *){
+
+		KClassifier classifier;
+
+		after() : staticinitialization(@Classifier *) {
+			this.classifier = Types.asClassifier(thisJoinPoint.getSignature()
+					.getDeclaringType());
+		}
+
+		@SuppressWarnings("unchecked")
+		Object around(Object self, Property property): 
+			execution(@Property * get*()) && this(self) && @annotation(property) && if(property.isDerivedUnion()) {
+			KProperty p = this.classifier.getAttribute(Beans.getPropertyName(thisJoinPointStaticPart
+					.getSignature().getName()));
+			return p.union(self);
+		}
+
 	}
 }

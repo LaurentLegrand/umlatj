@@ -23,6 +23,7 @@
 package org.umlatj.internal.kernel.property;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,4 +68,14 @@ public class MapProperty<K, E> extends KProperty<E> {
 	public List<E> toList(Object self) {
 		return new ArrayList<E>(this.field.get(self).values());
 	}
+
+	@Override
+	protected Object convert(List<E> list) {
+		Map<K, E> map = new HashMap<K, E>();
+		for (E e : list) {
+			map.put(this.key.get(e), e);
+		}
+		return map;
+	}
+
 }
