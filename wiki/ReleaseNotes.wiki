@@ -1,2 +1,9 @@
 
-* ReleaseNotes-0.1.0
+= Release Notes =
+
+== 0.1.0 ==
+
+  * Support for
+    * [Property properties] and [Property#Subsets_and_Derived_Unions]
+    * [Association binary associations] and [QualifiedAssociation qualified associations]
+    * [Hierarchy hierarchies]
