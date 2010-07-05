@@ -4,6 +4,6 @@
 == 0.1.0 ==
 
   * Support for
-    * [Property properties] and [Property#Subsets_and_Derived_Unions]
+    * [Property properties] and [Property#Subsets_and_Derived_Unions subsets and derived unions]
     * [Association binary associations] and [QualifiedAssociation qualified associations]
     * [Hierarchy hierarchies]
