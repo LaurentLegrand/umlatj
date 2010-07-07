@@ -1,4 +1,4 @@
-
+ 
 uml@J, UML annotations for Java
 
 Copyright (C) 2010 Laurent Legrand
@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 
 Sources:
-http://umlatj.googlecode.com/
+http://www.umlatj.org/
 
 Contact:
 

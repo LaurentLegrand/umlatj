@@ -4,7 +4,14 @@
   <artifactId>umlatj-parent</artifactId>
   <packaging>pom</packaging>
   <name>uml@J - parent</name>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
+  
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>2</version>
+  </parent>
+  
   <modules>
   	<module>umlatj</module>
   	<module>umlatj-petri</module>
@@ -22,13 +29,15 @@
 			<scope>test</scope>
 		</dependency>
   </dependencies>
-  <url>http://code.google.com/p/umlatj/</url>
+  <url>http://www.umlatj.org/</url>
   <issueManagement>
   	<url>http://code.google.com/p/umlatj/issues/list</url>
   </issueManagement>
   <developers>
   </developers>
   <scm>
+	<connection>scm:svn:https://umlatj.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://umlatj.googlecode.com/svn/trunk/</developerConnection>
   	<url>https://umlatj.googlecode.com/svn/trunk/</url>
   </scm>
 	<build>
@@ -79,6 +88,43 @@
 					</execution>
 				</executions>
 			</plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+  
+			
 		</plugins>
 	</build>
+		<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<show>public</show>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
+	</plugins>
+	</reporting>
+	
 </project>
