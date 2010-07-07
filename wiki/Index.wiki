@@ -3,4 +3,4 @@
 uml@J is an attempt to provide a way to represent in Java some UML concepts thanks to Java annotations
 and Aspect Oriented Programming.
 
- 
+[ReleaseNotes] 
