@@ -4,7 +4,7 @@
   <artifactId>umlatj</artifactId>
   <packaging>pom</packaging>
   <name>uml@J - Aggregator Project</name>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
   
   <parent>
     <groupId>org.sonatype.oss</groupId>
@@ -36,9 +36,9 @@
   <developers>
   </developers>
   <scm>
-	<connection>scm:svn:https://umlatj.googlecode.com/svn/tags/0.1.0</connection>
-    <developerConnection>scm:svn:https://umlatj.googlecode.com/svn/tags/0.1.0</developerConnection>
-  	<url>https://umlatj.googlecode.com/svn/tags/0.1.0</url>
+	<connection>scm:svn:https://umlatj.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://umlatj.googlecode.com/svn/trunk/</developerConnection>
+  	<url>https://umlatj.googlecode.com/svn/trunk/</url>
   </scm>
 	<build>
 		<plugins>
