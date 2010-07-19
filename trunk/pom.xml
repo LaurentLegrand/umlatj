@@ -13,6 +13,7 @@
   </parent>
   
   <modules>
+  	<module>umlatj-archetype</module>
   	<module>umlatj-core</module>
   	<module>umlatj-petri</module>
   	<module>umlatj-tools</module>
