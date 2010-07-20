@@ -9,6 +9,7 @@
   <artifactId>umlatj-tools</artifactId>
   <name>uml@J - Annotation Processors Project</name>
   <version>0.2.0-SNAPSHOT</version>
+  <description>umlatj-tools contains annotation processors that verify the usage of uml@J annotation in project.</description>
   <url>http://www.umlatj.org/</url>
   <dependencies>
   	<dependency>
