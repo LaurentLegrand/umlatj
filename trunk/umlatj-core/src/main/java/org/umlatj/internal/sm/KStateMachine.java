@@ -2,6 +2,13 @@ package org.umlatj.internal.sm;
 
 public class KStateMachine {
 
-	KState region = new KState();
+	/**
+	 * The root of all states
+	 */
+	KState root = new KState();
+
+	public KStateMachine() {
+		this.root.setName("<root>");
+	}
 
 }
