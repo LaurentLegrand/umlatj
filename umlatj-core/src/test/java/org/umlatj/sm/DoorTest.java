@@ -4,7 +4,6 @@ package org.umlatj.sm;
 import org.junit.Assert;
 import org.junit.Test;
 import org.umlatj.internal.sm.DeclaredStateMachine;
-import org.umlatj.sm.Door.DoorState;
 
 public class DoorTest {
 

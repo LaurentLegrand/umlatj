@@ -42,4 +42,18 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface StateMachine {
 
+	/**
+	 * The initial state of the machine
+	 * 
+	 * @return
+	 */
+	String initial() default "";
+
+	/**
+	 * The enum that contains the list of available states
+	 * 
+	 * @return
+	 */
+	Class<? extends Enum<?>> states();
+
 }

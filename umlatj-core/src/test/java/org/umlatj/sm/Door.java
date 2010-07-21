@@ -4,12 +4,8 @@ import org.umlatj.sm.State;
 import org.umlatj.sm.StateMachine;
 import org.umlatj.sm.Transition;
 
-@StateMachine
+@StateMachine(states=DoorState.class)
 public class Door {
-
-	enum DoorState {
-		OPENED, CLOSED, LOCKED;
-	}
 
 	@State
 	DoorState state = DoorState.OPENED;
