@@ -110,7 +110,8 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 			instance.addGeneral(Types.asClassifier(type.getSuperclass()));
 		}
 
-		for (Match match : this.findMatches(type)) {
+		List<Match> matches = this.findMatches(type);
+		for (Match match : matches) {
 			KProperty property = null;
 			if (Collection.class.isAssignableFrom(match.type)) {
 				property = new CollectionProperty(match.proxy);
@@ -138,20 +139,15 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 			} else {
 				property = new SingletonProperty(match.getProxy());
 			}
+			
 			if (property != null) {
 				instance.addOwnedAttribute(property);
-				// manage derived union
-				if (!"".equals(match.property.subset())) {
-					KProperty union = instance.getAttribute(match.property
-							.subset());
-					if (union != null) {
-						union.addSubset(property);
-					} else {
-						// TODO raise warning!
-					}
-				}
 			}
+			
 		}
+		
+		
+		this.derivedUnionAndSubsets(type, instance, matches);
 
 		for (Method method : Classes.findMethods(type, Constraint.class)) {
 			// TODO verify type is boolean, etc.
@@ -160,6 +156,22 @@ public class ClassifierBuilder extends Builder<KClassifier> {
 					proxy)
 					: new ThisConstraint(proxy);
 			instance.addConstraint(constraint);
+		}
+	}
+	
+	void derivedUnionAndSubsets(Class<?> type, KClassifier instance, List<Match> matches) {
+		for (Match match: matches) {
+			KProperty property = instance.getAttribute(match.proxy.getName());
+			
+			if (property != null && !"".equals(match.property.subset())) {
+				KProperty union = instance.getAttribute(match.property
+						.subset());
+				if (union != null) {
+					union.addSubset(property);
+				} else {
+					// TODO raise warning!
+				}				
+			}
 		}
 	}
 
