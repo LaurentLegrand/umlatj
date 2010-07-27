@@ -40,31 +40,5 @@ Additionally, you must activate the AspectJ Maven Plugin in the build section an
 
 Unfortunately, latest versions of m2eclispe don't support AJDT anymore (https://issues.sonatype.org/browse/MNGECLIPSE-1944).
 
-Instead, you can use the maven-eclipse-plugin which supports AJDT. Just add the following declaration in the build section, and run
-	 `mvn eclipse:eclipse` 
+A build of the AJDT m2eclipse is available in the download area: http://umlatj.googlecode.com/files/org.maven.ide.eclipse.ajdt.feature-0.9.9.zip
 
-{{{
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-eclipse-plugin</artifactId>
-	<version>2.8</version>
-	<configuration>
-		<!-- AJDT support -->
-		<ajdtVersion>1.5</ajdtVersion>
-		
-		<!-- m2eclipse compatibility -->
-		<additionalProjectnatures>
-			<additionalProjectnature>org.maven.ide.eclipse.maven2Nature</additionalProjectnature>
-		</additionalProjectnatures>
-		<additionalBuildcommands>
-			<buildCommand>
-				<name>org.maven.ide.eclipse.maven2Builder</name>
-				<arguments>
-				</arguments>
-			</buildCommand>
-		</additionalBuildcommands>
-		
-	</configuration>
-</plugin>
-
-}}}
