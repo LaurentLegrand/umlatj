@@ -1,7 +1,9 @@
 package org.umlatj.internal.sm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.umlatj.kernel.Classifier;
 import org.umlatj.kernel.Property;
@@ -14,8 +16,24 @@ public class KState {
 
 	@Property
 	List<KState> children = new ArrayList<KState>();
-	
+
+	/**
+	 * 
+	 */
 	String name;
+
+	/**
+	 * Incoming transitions
+	 * 
+	 */
+	@Property
+	Set<KTransition> incoming = new HashSet<KTransition>();
+
+	/**
+	 * Outgoing transitions
+	 */
+	@Property
+	Set<KTransition> outgoing = new HashSet<KTransition>();
 
 	/**
 	 * Return <code>true</code> if this state has no children.
