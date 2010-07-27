@@ -5,9 +5,6 @@
 	<artifactId>${artifactId}</artifactId>
 	<version>${version}</version>
 	<packaging>jar</packaging>
-	<properties>
-		<parallelj.version>0.2.0-SNAPSHOT</parallelj.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -16,16 +13,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.parallelj</groupId>
-			<artifactId>parallelj-core</artifactId>
-			<version>${parallelj.version}</version>
+			<groupId>org.umlatj</groupId>
+			<artifactId>umlatj-core</artifactId>
+			<version>${umlatj.version}</version>
 			<type>jar</type>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.parallelj</groupId>
-			<artifactId>parallelj-tools</artifactId>
-			<version>${parallelj.version}</version>
+			<groupId>org.umlatj</groupId>
+			<artifactId>umlatj-tools</artifactId>
+			<version>${umlatj.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -52,12 +49,15 @@
 					<target>1.6</target>
 					<aspectLibraries>
 						<aspectLibrary>
-							<groupId>org.parallelj</groupId>
-							<artifactId>parallelj-core</artifactId>
+							<groupId>org.umlatj</groupId>
+							<artifactId>umlatj-core</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<properties>
+		<umlatj.version>0.2.0-SNAPSHOT</umlatj.version>
+	</properties>
 </project>
