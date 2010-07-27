@@ -1,3 +1,11 @@
 <archetype>
-	<id>parallelj-archetype</id>
+  <id>umlatj-archetype</id>
+  <sources>
+    <source>src/main/java/wiki/Folder.java</source>
+    <source>src/main/java/wiki/Document.java</source>
+    <source>src/main/java/wiki/MyPackage.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/wiki/AssociationTest.java</source>
+  </testSources>
 </archetype>
