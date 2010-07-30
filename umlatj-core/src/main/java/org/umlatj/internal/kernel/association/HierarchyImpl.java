@@ -23,6 +23,7 @@
 package org.umlatj.internal.kernel.association;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.umlatj.internal.kernel.KAssociation;
@@ -70,7 +71,7 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 
 	// @Override
 	public List<E> getChildren(E self) {
-		return this.getTarget().toList(self);
+		return this.getOwner().toList(self);
 	}
 
 	// @Override
@@ -87,8 +88,12 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 
 	// @Override
 	public List<E> getFollowingSiblings(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		E parent = this.getParent(self);
+		if (parent == null) {
+			return Collections.emptyList();
+		}
+		List<E> siblings = this.getChildren(parent);
+		return siblings.subList(siblings.indexOf(self) + 1, siblings.size());
 	}
 
 	// @Override
@@ -97,10 +102,14 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		return null;
 	}
 
-	// @Override
+	@Override
 	public List<E> getPrecedingSiblings(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		E parent = this.getParent(self);
+		if (parent == null) {
+			return Collections.emptyList();
+		}
+		List<E> siblings = this.getChildren(parent);
+		return siblings.subList(0, siblings.indexOf(self));
 	}
 
 	// @Override

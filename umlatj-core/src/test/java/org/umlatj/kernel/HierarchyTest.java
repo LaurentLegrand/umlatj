@@ -3,7 +3,6 @@ package org.umlatj.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,24 +18,24 @@ import org.umlatj.kernel.Association.End;
 import org.umlatj.kernel.Association.Hierarchy;
 
 public class HierarchyTest {
-	
+
 	@Package
 	static class MyPackage {
-		
-		@Association({@End("parent"), @End("children")})
+
+		@Association({ @End("parent"), @End("children") })
 		static Hierarchy<MyNode> hierarchy;
-		
+
 		public static Hierarchy<MyNode> getHierarchy() {
-	        return hierarchy;
-        }
+			return hierarchy;
+		}
 	}
 
 	@Classifier
 	static class MyNode {
-		
+
 		@Property
 		MyNode parent;
-		
+
 		@Property
 		List<MyNode> children = new ArrayList<MyNode>();
 	}
@@ -45,9 +44,11 @@ public class HierarchyTest {
 
 	static One<String> target = new One<String>();
 
-	static CollectionProperty<String> ownerProperty = new CollectionProperty<String>(owner);
+	static CollectionProperty<String> ownerProperty = new CollectionProperty<String>(
+			owner);
 
-	static SingletonProperty<String> targetProperty = new SingletonProperty<String>(target);
+	static SingletonProperty<String> targetProperty = new SingletonProperty<String>(
+			target);
 
 	static HierarchyImpl<String> hierarchy;
 
@@ -115,16 +116,53 @@ public class HierarchyTest {
 		Assert.assertEquals("1.1", ancestors.get(1));
 		Assert.assertEquals("1.1.1", ancestors.get(2));
 	}
-	
+
 	@Test
 	public void testNode() {
 		MyNode parent = new MyNode();
 		MyNode child = new MyNode();
-		
+
 		MyPackage.getHierarchy().add(parent, child);
 		Assert.assertEquals(parent, child.parent);
 		Assert.assertEquals(parent, MyPackage.getHierarchy().getParent(child));
 		Assert.assertEquals(parent, MyPackage.getHierarchy().getRoot(child));
 	}
-	
+
+	@Test
+	public void testChildren() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1", "1.2");
+		hierarchy.add("1", "1.3");
+		hierarchy.add("1", "1.4");
+
+		Assert.assertEquals(hierarchy.getChildren("1").size(), 4);
+		Assert.assertTrue(hierarchy.getChildren("1.4").isEmpty());
+	}
+
+	@Test
+	public void testFollowingSibling() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1", "1.2");
+		hierarchy.add("1", "1.3");
+		hierarchy.add("1", "1.4");
+
+		Assert.assertTrue(hierarchy.getFollowingSiblings("1").isEmpty());
+		Assert.assertTrue(hierarchy.getFollowingSiblings("1.4").isEmpty());
+		Assert.assertTrue(hierarchy.getFollowingSiblings("1.3").size() == 1);
+		Assert.assertTrue(hierarchy.getFollowingSiblings("1.3").contains("1.4"));
+	}
+
+	@Test
+	public void testPrecedingSibling() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1", "1.2");
+		hierarchy.add("1", "1.3");
+		hierarchy.add("1", "1.4");
+
+		Assert.assertTrue(hierarchy.getPrecedingSiblings("1").isEmpty());
+		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.1").isEmpty());
+		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.2").size() == 1);
+		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.2").contains("1.1"));
+	}
+
 }
