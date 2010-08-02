@@ -10,10 +10,6 @@ import org.junit.Test;
 import org.umlatj.internal.kernel.association.HierarchyImpl;
 import org.umlatj.internal.kernel.property.CollectionProperty;
 import org.umlatj.internal.kernel.property.SingletonProperty;
-import org.umlatj.kernel.Association;
-import org.umlatj.kernel.Classifier;
-import org.umlatj.kernel.Package;
-import org.umlatj.kernel.Property;
 import org.umlatj.kernel.Association.End;
 import org.umlatj.kernel.Association.Hierarchy;
 
@@ -163,6 +159,77 @@ public class HierarchyTest {
 		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.1").isEmpty());
 		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.2").size() == 1);
 		Assert.assertTrue(hierarchy.getPrecedingSiblings("1.2").contains("1.1"));
+	}
+
+	@Test
+	public void testDescendants() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1.1", "1.1.1");
+		hierarchy.add("1.1.1", "1.1.1.1");
+		hierarchy.add("1", "1.2");
+
+		Assert.assertTrue(hierarchy.getDescendants("1.1").size() == 2);
+		Assert.assertTrue(hierarchy.getDescendants("1.1").contains("1.1.1"));
+		Assert.assertTrue(hierarchy.getDescendants("1.1").contains("1.1.1.1"));
+		Assert.assertTrue(hierarchy.getDescendants("1.2").isEmpty());
+	}
+	
+	@Test
+	public void testDescendantsOrSelf() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1.1", "1.1.1");
+		hierarchy.add("1.1.1", "1.1.1.1");
+		hierarchy.add("1", "1.2");
+
+		Assert.assertTrue(hierarchy.getDescendantsOrSelf("1.1").size() == 3);
+		Assert.assertTrue(hierarchy.getDescendantsOrSelf("1.1").contains("1.1"));
+		Assert.assertTrue(hierarchy.getDescendantsOrSelf("1.1").contains("1.1.1"));
+		Assert.assertTrue(hierarchy.getDescendantsOrSelf("1.1").contains("1.1.1.1"));
+		Assert.assertTrue(hierarchy.getDescendantsOrSelf("1.2").size() == 1);
+	}
+	
+	@Test
+	public void testFollowing() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1.1", "1.1.1");
+		hierarchy.add("1.1.1", "1.1.1.1");
+		hierarchy.add("1", "1.2");
+		hierarchy.add("1.2", "1.2.1");
+		hierarchy.add("1", "1.3");
+		hierarchy.add("1", "1.4");
+		
+		Assert.assertTrue(hierarchy.getFollowings("1").isEmpty());
+		
+		Assert.assertTrue(hierarchy.getFollowings("1.1").size() == 4);
+		Assert.assertTrue(hierarchy.getFollowings("1.1").contains("1.2"));
+		Assert.assertTrue(hierarchy.getFollowings("1.1").contains("1.2.1"));
+		Assert.assertTrue(hierarchy.getFollowings("1.1").contains("1.3"));
+		Assert.assertTrue(hierarchy.getFollowings("1.1").contains("1.4"));
+		
+		Assert.assertTrue(hierarchy.getFollowings("1.4").isEmpty());
+	}
+	
+	@Test
+	public void testPreceding() {
+		hierarchy.add("1", "1.1");
+		hierarchy.add("1.1", "1.1.1");
+		hierarchy.add("1.1.1", "1.1.1.1");
+		hierarchy.add("1", "1.2");
+		hierarchy.add("1.2", "1.2.1");
+		hierarchy.add("1", "1.3");
+		hierarchy.add("1", "1.4");
+		
+		Assert.assertTrue(hierarchy.getPrecedings("1").isEmpty());
+		
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").size() == 6);
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.1"));
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.1.1"));
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.1.1.1"));
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.2"));
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.2.1"));
+		Assert.assertTrue(hierarchy.getPrecedings("1.4").contains("1.3"));
+		
+		Assert.assertTrue(hierarchy.getPrecedings("1.1.1").isEmpty());
 	}
 
 }
