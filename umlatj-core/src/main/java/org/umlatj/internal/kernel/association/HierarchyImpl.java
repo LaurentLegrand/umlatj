@@ -36,7 +36,7 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		super(name);
 	}
 
-	// @Override
+	@Override
 	public List<E> getAncestors(E self) {
 		List<E> list = new ArrayList<E>();
 		E parent = this.getParent(self);
@@ -47,13 +47,13 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		return list;
 	}
 
-	// @Override
+	@Override
 	public E getParent(E self) {
 		List<E> list = this.getTarget().toList(self);
 		return (list.isEmpty()) ? null : list.get(0);
 	}
 
-	// @Override
+	@Override
 	public E getRoot(E self) {
 		E parent = this.getParent(self);
 		while (parent != null) {
@@ -69,21 +69,28 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		return list;
 	}
 
-	// @Override
+	@Override
 	public List<E> getChildren(E self) {
 		return this.getOwner().toList(self);
 	}
 
-	// @Override
+	@Override
 	public List<E> getDescendants(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		List<E> list = new ArrayList<E>();
+		for (E child : this.getChildren(self)) {
+			list.addAll(this.getDescendantsOrSelf(child));
+		}
+		return list;
 	}
 
-	// @Override
+	@Override
 	public List<E> getDescendantsOrSelf(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		List<E> list = new ArrayList<E>();
+		list.add(self);
+		for (E child : this.getChildren(self)) {
+			list.addAll(this.getDescendantsOrSelf(child));
+		}
+		return list;
 	}
 
 	// @Override
@@ -96,10 +103,17 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		return siblings.subList(siblings.indexOf(self) + 1, siblings.size());
 	}
 
-	// @Override
+	@Override
 	public List<E> getFollowings(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		List<E> list = new ArrayList<E>();
+		while (self != null) {
+			// get descendants of each following sibling
+			for (E e : this.getFollowingSiblings(self)) {
+				list.addAll(this.getDescendantsOrSelf(e));
+			}
+			self = this.getParent(self);
+		}
+		return list;
 	}
 
 	@Override
@@ -112,10 +126,16 @@ public class HierarchyImpl<E> extends KAssociation<E, E> implements
 		return siblings.subList(0, siblings.indexOf(self));
 	}
 
-	// @Override
+	@Override
 	public List<E> getPrecedings(E self) {
-		// TODO Auto-generated method stub
-		return null;
+		List<E> list = new ArrayList<E>();
+		for (E ancestor : this.getAncestorsOrSelf(self)) {
+			// get descendants of each ancestor
+			for (E e : this.getPrecedingSiblings(ancestor)) {
+				list.addAll(this.getDescendantsOrSelf(e));
+			}
+		}
+		return list;
 	}
 
 }
